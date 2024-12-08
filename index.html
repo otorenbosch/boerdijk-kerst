@@ -251,52 +251,55 @@
     </audio>
 
     <script>
-        let currentSlide = 0;
-        let slideshowInterval;
+    let currentSlide = 0;
+    let slideshowInterval;
 
-        function showSlide(n) {
-            const slides = document.querySelectorAll('.slide');
-            const counter = document.querySelector('.slide-counter');
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (n + slides.length) % slides.length;
-            slides[currentSlide].classList.add('active');
-            counter.textContent = `${currentSlide + 1} / ${slides.length}`;
+    function showSlide(n) {
+        const slides = document.querySelectorAll('.slide');
+        const counter = document.querySelector('.slide-counter');
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (n + slides.length) % slides.length;
+        slides[currentSlide].classList.add('active');
+        counter.textContent = `${currentSlide + 1} / ${slides.length}`;
+    }
+
+    function changeSlide(n) {
+        showSlide(currentSlide + n);
+        restartSlideshow();
+    }
+
+    function startSlideshow() {
+        slideshowInterval = setInterval(() => {
+            showSlide(currentSlide + 1);
+        }, 3000);
+    }
+
+    function restartSlideshow() {
+        clearInterval(slideshowInterval);
+        startSlideshow();
+    }
+
+    let musicPlaying = true;
+    const music = document.getElementById('bgMusic');
+    const musicButton = document.getElementById('musicButton');
+
+    function toggleMusic() {
+        if (musicPlaying) {
+            music.pause();
+            musicButton.textContent = '🔇';
+        } else {
+            music.play();
+            musicButton.textContent = '🔊';
         }
+        musicPlaying = !musicPlaying;
+    }
 
-        function changeSlide(n) {
-            showSlide(currentSlide + n);
-            restartSlideshow();
-        }
-
-        function startSlideshow() {
-            slideshowInterval = setInterval(() => {
-                showSlide(currentSlide + 1);
-            }, 3000);
-        }
-
-        function restartSlideshow() {
-            clearInterval(slideshowInterval);
-            startSlideshow();
-        }
-
-        let musicPlaying = false;
-        const music = document.getElementById('bgMusic');
-        const musicButton = document.getElementById('musicButton');
-
-        function toggleMusic() {
-            if (musicPlaying) {
-                music.pause();
-                musicButton.textContent = '🔇';
-            } else {
-                music.play();
-                musicButton.textContent = '🔊';
-            }
-            musicPlaying = !musicPlaying;
-        }
-
-        window.onload = function() {
-            startSlideshow();
-        }
-    </script>
+    window.onload = function() {
+        startSlideshow();
+        // Start muziek automatisch
+        music.play();
+        musicButton.textContent = '🔊';
+    }
+</script>
 </body>
 </html>
