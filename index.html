@@ -8,38 +8,47 @@
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 10px;
             background-color: #0B5723;
             color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         .container {
             max-width: 1200px;
             margin: 0 auto;
             text-align: center;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
         h1 {
             color: #D42426;
             font-size: 2.5em;
-            margin-bottom: 30px;
+            margin: 15px 0;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
         .message {
             font-size: 1.2em;
-            margin: 30px auto;
+            margin: 15px auto;
             max-width: 600px;
-            line-height: 1.8;
+            line-height: 1.6;
+            padding: 0 10px;
         }
         .signature {
             color: #e4c76f;
             font-style: italic;
-            margin-top: 40px;
+            margin: 15px 0;
+            padding: 10px;
         }
 
         /* Slideshow styling */
         .slideshow-container {
+            width: 100%;
             max-width: 800px;
-            height: 500px;
-            margin: 40px auto;
+            height: 60vh;
+            margin: 20px auto;
             position: relative;
             background: rgba(0,0,0,0.2);
             border-radius: 10px;
@@ -105,6 +114,50 @@
             padding: 5px 10px;
             border-radius: 15px;
             font-size: 14px;
+        }
+
+        /* Audio controls */
+        .audio-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.5);
+            padding: 10px;
+            border-radius: 25px;
+            z-index: 100;
+        }
+        .audio-button {
+            background: none;
+            border: none;
+            color: #e4c76f;
+            cursor: pointer;
+            font-size: 24px;
+            padding: 5px;
+        }
+        .audio-button:hover {
+            color: #fff;
+        }
+
+        /* Media queries voor mobiel */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+                margin: 10px 0;
+            }
+            .message {
+                font-size: 1.1em;
+                margin: 10px auto;
+            }
+            .slideshow-container {
+                height: 50vh;
+                margin: 10px auto;
+            }
+            .signature {
+                margin: 10px 0;
+            }
+            body {
+                padding: 5px;
+            }
         }
     </style>
 </head>
@@ -189,6 +242,14 @@
         </div>
     </div>
 
+    <!-- Muziekspeler en controls -->
+    <div class="audio-controls">
+        <button class="audio-button" onclick="toggleMusic()" id="musicButton">🔇</button>
+    </div>
+    <audio id="bgMusic" loop>
+        <source src="music/we-wish-you-a-merry-christmas.mp3" type="audio/mp3">
+    </audio>
+
     <script>
         let currentSlide = 0;
         let slideshowInterval;
@@ -196,23 +257,14 @@
         function showSlide(n) {
             const slides = document.querySelectorAll('.slide');
             const counter = document.querySelector('.slide-counter');
-            
-            // Verberg huidige slide
             slides[currentSlide].classList.remove('active');
-            
-            // Bereken nieuwe slide index
             currentSlide = (n + slides.length) % slides.length;
-            
-            // Toon nieuwe slide
             slides[currentSlide].classList.add('active');
-            
-            // Update teller
             counter.textContent = `${currentSlide + 1} / ${slides.length}`;
         }
 
         function changeSlide(n) {
             showSlide(currentSlide + n);
-            // Herstart de timer na handmatige navigatie
             restartSlideshow();
         }
 
@@ -227,8 +279,24 @@
             startSlideshow();
         }
 
-        // Start de slideshow zodra de pagina geladen is
-        window.onload = startSlideshow;
+        let musicPlaying = false;
+        const music = document.getElementById('bgMusic');
+        const musicButton = document.getElementById('musicButton');
+
+        function toggleMusic() {
+            if (musicPlaying) {
+                music.pause();
+                musicButton.textContent = '🔇';
+            } else {
+                music.play();
+                musicButton.textContent = '🔊';
+            }
+            musicPlaying = !musicPlaying;
+        }
+
+        window.onload = function() {
+            startSlideshow();
+        }
     </script>
 </body>
 </html>
