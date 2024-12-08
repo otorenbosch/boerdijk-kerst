@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vrolijk Kerstfeest - Boerdijk</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #0B5723;
+            color: #fff;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        h1 {
+            color: #D42426;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .message {
+            font-size: 1.2em;
+            margin: 30px auto;
+            max-width: 600px;
+            line-height: 1.8;
+        }
+        .signature {
+            color: #e4c76f;
+            font-style: italic;
+            margin-top: 40px;
+        }
+
+        /* Slideshow styling */
+        .slideshow-container {
+            max-width: 800px;
+            height: 500px;
+            margin: 40px auto;
+            position: relative;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .slide.active {
+            display: block;
+            opacity: 1;
+        }
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        /* Navigation buttons */
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(228, 199, 111, 0.7);
+            border: none;
+            color: white;
+            padding: 15px;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .slideshow-container:hover .nav-button {
+            opacity: 1;
+        }
+        .nav-button:hover {
+            background: rgba(228, 199, 111, 0.9);
+        }
+        .prev {
+            left: 10px;
+        }
+        .next {
+            right: 10px;
+        }
+
+        /* Slide counter */
+        .slide-counter {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.5);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Vrolijk Kerstfeest</h1>
+        
+        <div class="message">
+            <p>Dit is wat er gebeurt als een straat er samen iets moois van maakt. Kom kijken, verwonder je, en geniet van de lichtjes in de Boerdijk.</p>
+        </div>
+
+        <div class="slideshow-container">
+            <button class="nav-button prev" onclick="changeSlide(-1)">❮</button>
+            <button class="nav-button next" onclick="changeSlide(1)">❯</button>
+            
+            <div class="slide active">
+                <img src="/api/placeholder/800/500" alt="Kerstverlichting 1">
+            </div>
+            <div class="slide">
+                <img src="/api/placeholder/800/500" alt="Kerstverlichting 2">
+            </div>
+            <div class="slide">
+                <img src="/api/placeholder/800/500" alt="Kerstverlichting 3">
+            </div>
+            <div class="slide">
+                <img src="/api/placeholder/800/500" alt="Kerstverlichting 4">
+            </div>
+            <div class="slide">
+                <img src="/api/placeholder/800/500" alt="Kerstverlichting 5">
+            </div>
+            <!-- Voeg hier de overige slides toe -->
+            
+            <div class="slide-counter">1 / 20</div>
+        </div>
+
+        <div class="signature">
+            <p>Fijne feestdagen & een mooi 2025!</p>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        let slideshowInterval;
+
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            const counter = document.querySelector('.slide-counter');
+            
+            // Verberg huidige slide
+            slides[currentSlide].classList.remove('active');
+            
+            // Bereken nieuwe slide index
+            currentSlide = (n + slides.length) % slides.length;
+            
+            // Toon nieuwe slide
+            slides[currentSlide].classList.add('active');
+            
+            // Update teller
+            counter.textContent = `${currentSlide + 1} / ${slides.length}`;
+        }
+
+        function changeSlide(n) {
+            showSlide(currentSlide + n);
+            // Herstart de timer na handmatige navigatie
+            restartSlideshow();
+        }
+
+        function startSlideshow() {
+            slideshowInterval = setInterval(() => {
+                showSlide(currentSlide + 1);
+            }, 3000);
+        }
+
+        function restartSlideshow() {
+            clearInterval(slideshowInterval);
+            startSlideshow();
+        }
+
+        // Start de slideshow zodra de pagina geladen is
+        window.onload = startSlideshow;
+    </script>
+</body>
+</html>
